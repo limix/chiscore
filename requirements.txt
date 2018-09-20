@@ -1,4 +1,4 @@
-chi2comb>=0.0.1
+chi2comb>=0.0.2
 numpy>=1.14.3
 pytest-runner>=4.2
 pytest>=3.6.3
