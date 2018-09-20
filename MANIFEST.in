@@ -1,3 +1,5 @@
 include LICENSE.md
 include README.md
 include version.py
+include skat/data/davies_pvalue.npz
+include skat/data/skat_davies_pvalue.npz
