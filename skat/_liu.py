@@ -3,6 +3,8 @@ from scipy.stats import chi2
 
 
 def skat_mod_liu(q, lambda_):
+    # q: test statistic
+    # lambda_:eigenvalues (weights of the linear combination...)
 
     r = len(lambda_)
 

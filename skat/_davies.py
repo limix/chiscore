@@ -8,6 +8,9 @@ from chi2comb import chi2comb_cdf, ChiSquared
 
 
 def davies_pvalue(Q, K, Q_resampling=None):
+    # q: test statistic
+    # K: eigenvalues (weights of the linear combination...)
+    # Q_resampling:
 
     Q = asarray(atleast_1d(Q), float)
 
@@ -64,7 +67,7 @@ def _pvalue_lambda(lambda_, Q):
     p_val_msg = None
     p_val_log = None
     if p_val[0] == 0:
-
+        # TODO: the tests have never been here. Come up with a tests that arrives here.
         param = _liu_params_mod_lambda(lambda_)
         p_val_msg = _liu_pvalue_mod_lambda_zero(
             Q[0],

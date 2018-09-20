@@ -3,7 +3,7 @@ import tempfile
 import shutil
 import warnings
 
-_filenames = ["davies_pvalue.npz", "skat_davies_pvalue.npz", "skat_mod_liu.npz"]
+_filenames = ["davies_pvalue.npz", "optimal_davies_pvalue.npz", "skat_mod_liu.npz"]
 
 
 class data_file(object):
