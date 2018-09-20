@@ -3,3 +3,4 @@ include README.md
 include version.py
 include skat/_data/davies_pvalue.npz
 include skat/_data/skat_davies_pvalue.npz
+include skat/_data/skat_mod_liu.npz
