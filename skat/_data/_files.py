@@ -32,7 +32,7 @@ class data_file(object):
             if __name__ == "__main__":
                 shutil.copy(join(dirname(realpath(__file__)), fn), fp)
             else:
-                resource_path = "example/{}".format(fn)
+                resource_path = "_data/{}".format(fn)
                 content = pkg_resources.resource_string(
                     __name__.split(".")[0], resource_path
                 )

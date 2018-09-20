@@ -16,7 +16,7 @@ def davies_pvalue(Q, K, Q_resampling=None):
     else:
         Q_all = Q
 
-    re = Get_PValue(K, Q_all)
+    re = _pvalue_lambda(_lambda(K), Q_all)
     param = dict()
     param["liu_pval"] = re["p_val_liu"][0]
     param["Is_Converged"] = re["is_converge"][0]
@@ -32,13 +32,7 @@ def davies_pvalue(Q, K, Q_resampling=None):
     return re
 
 
-def Get_PValue(K, Q):
-
-    lambda_ = Get_Lambda(K)
-    return Get_PValue_Lambda(lambda_, Q)
-
-
-def Get_PValue_Lambda(lambda_, Q):
+def _pvalue_lambda(lambda_, Q):
 
     n1 = len(Q)
 
@@ -46,7 +40,7 @@ def Get_PValue_Lambda(lambda_, Q):
     p_val_liu = zeros(n1)
     is_converge = zeros(n1)
 
-    p_val_liu = Get_Liu_PVal_MOD_Lambda(Q, lambda_)
+    p_val_liu = _liu_pvalue_mod_lambda(Q, lambda_)
 
     for i in range(n1):
         chi2s = [ChiSquared(w, 0., 1) for w in lambda_]
@@ -71,8 +65,8 @@ def Get_PValue_Lambda(lambda_, Q):
     p_val_log = None
     if p_val[0] == 0:
 
-        param = Get_Liu_Params_Mod_Lambda(lambda_)
-        p_val_msg = Get_Liu_PVal_MOD_Lambda_Zero(
+        param = _liu_params_mod_lambda(lambda_)
+        p_val_msg = _liu_pvalue_mod_lambda_zero(
             Q[0],
             param["muQ"],
             param["muX"],
@@ -81,7 +75,7 @@ def Get_PValue_Lambda(lambda_, Q):
             param["ll"],
             param["d"],
         )
-        p_val_log = Get_Liu_PVal_MOD_Lambda(Q[0], lambda_, log_p=True)[0]
+        p_val_log = _liu_pvalue_mod_lambda(Q[0], lambda_, log_p=True)[0]
 
     return dict(
         p_value=p_val,
@@ -92,23 +86,23 @@ def Get_PValue_Lambda(lambda_, Q):
     )
 
 
-def Get_Lambda(K):
+def _lambda(K):
 
     lambda1 = eigvalsh(K)
     lambda1 = np.sort(lambda1)
-    IDX1 = where(lambda1 >= 0)[0]
+    idx1 = where(lambda1 >= 0)[0]
 
     # eigenvalue bigger than sum(eigenvalues)/1000
-    IDX2 = where(lambda1 > mean(lambda1[IDX1]) / 100000)[0]
+    idx2 = where(lambda1 > mean(lambda1[idx1]) / 100000)[0]
 
-    if len(IDX2) == 0:
+    if len(idx2) == 0:
         sys.exit("No Eigenvalue is bigger than 0!!")
-    return lambda1[IDX2]
+    return lambda1[idx2]
 
 
-def Get_Liu_PVal_MOD_Lambda(Q_all, lambda_, log_p=False):
+def _liu_pvalue_mod_lambda(Q_all, lambda_, log_p=False):
 
-    param = Get_Liu_Params_Mod_Lambda(lambda_)
+    param = _liu_params_mod_lambda(lambda_)
 
     Q_Norm = (Q_all - param["muQ"]) / param["sigmaQ"]
     Q_Norm1 = Q_Norm * param["sigmaX"] + param["muX"]
@@ -117,12 +111,11 @@ def Get_Liu_PVal_MOD_Lambda(Q_all, lambda_, log_p=False):
         assert False
         # Q_Norm1 = exp(Q_Norm1)
     p_value = 1 - chi2.cdf(Q_Norm1, df=param["ll"], loc=param["d"])
-    # p_value = pchisq(Q_Norm1, df=param.ll, ncp=param.d, lower_tail=False, log_p=log_p)
 
     return p_value
 
 
-def Get_Liu_Params_Mod_Lambda(lambda_):
+def _liu_params_mod_lambda(lambda_):
     # Helper function for getting the parameters for the null approximation
 
     c1 = zeros(4)
@@ -149,9 +142,7 @@ def Get_Liu_Params_Mod_Lambda(lambda_):
     return dict(ll=ll, d=d, muQ=muQ, muX=muX, sigmaQ=sigmaQ, sigmaX=sigmaX)
 
 
-def Get_Liu_PVal_MOD_Lambda_Zero(Q, muQ, muX, sigmaQ, sigmaX, l, d):
-
-    Q_Norm = (Q - muQ) / sigmaQ
+def _liu_pvalue_mod_lambda_zero(Q, muQ, muX, sigmaQ, sigmaX, l, d):
 
     temp = c(
         0.05,
