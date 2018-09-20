@@ -1,6 +1,6 @@
 # skat
 
-[![Travis](https://img.shields.io/travis/limix/skat.svg?style=flat-square&label=linux%20%2F%20macos%20build)](https://travis-ci.org/limix/skat) [![AppVeyor](https://img.shields.io/appveyor/ci/Horta/skat.svg?style=flat-square&label=windows%20build)](https://ci.appveyor.com/project/Horta/skat) [![Documentation](https://img.shields.io/readthedocs/skat.svg?style=flat-square&version=stable)](https://skat.readthedocs.io/)
+[![Travis](https://img.shields.io/travis/com/limix/skat.svg?style=flat-square&label=linux%20%2F%20macos%20build)](https://travis-ci.com/limix/skat) [![AppVeyor](https://img.shields.io/appveyor/ci/Horta/skat.svg?style=flat-square&label=windows%20build)](https://ci.appveyor.com/project/Horta/skat)
 
 
 ## Install
