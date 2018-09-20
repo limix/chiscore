@@ -1,6 +1,7 @@
 from os.path import dirname, realpath, join
 import tempfile
 import shutil
+import warnings
 
 _filenames = ["davies_pvalue.npz", "skat_davies_pvalue.npz"]
 
@@ -45,4 +46,7 @@ class data_file(object):
         return filepaths
 
     def __exit__(self, *_):
-        shutil.rmtree(self._dirpath)
+        try:
+            shutil.rmtree(self._dirpath)
+        except PermissionError as e:
+            warnings.warn(str(e) + "\n. I will ignore it and proceed.")
