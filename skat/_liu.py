@@ -1,12 +1,10 @@
-from numpy import concatenate, sqrt
+from numpy import sqrt
 from scipy.stats import chi2
 
 
-def skat_mod_liu(q, lambda_):
+def mod_liu(q, lambda_):
     # q: test statistic
     # lambda_:eigenvalues (weights of the linear combination...)
-
-    r = len(lambda_)
 
     c1 = sum(lambda_)
 
@@ -38,27 +36,8 @@ def skat_mod_liu(q, lambda_):
         l = 1 / s2
         a = sqrt(l)
 
-    muX = l + delta
-
-    sigmaX = sqrt(2) * a
-
     Q_norm = (q - muQ) / sigmaQ * sqrt(2 * l) + l
 
-    # Qq = pchisq(Q_norm, df=l, lower_tail=False)
     Qq = chi2(df=l).sf(Q_norm)
 
-    # return concatenate([Qq, muQ, sigmaQ, l])
     return (Qq, muQ, sigmaQ, l)
-
-
-def main():
-    import numpy as np
-
-    data = np.load("skat_mod_liu.npz")
-    print(skat_mod_liu(data["args"][0][0], data["args"][1]))
-    print(data["pliumod"])
-    # np.savez("skat_mod_liu.npz", args=args, pliumod=pliumod)
-
-
-if __name__ == "__main__":
-    main()

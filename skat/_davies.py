@@ -1,25 +1,30 @@
 import sys
 import numpy as np
-from numpy import concatenate as c
 from numpy import where, mean, zeros, sqrt, atleast_1d, asarray
 from numpy.linalg import eigvalsh
 from scipy.stats import chi2
 from chi2comb import chi2comb_cdf, ChiSquared
 
 
-def davies_pvalue(Q, K, Q_resampling=None):
-    # q: test statistic
-    # K: eigenvalues (weights of the linear combination...)
-    # Q_resampling:
+def davies_pvalue(q, w):
+    r"""Joint significance of statistics derived from chi2-squared distributions.
 
-    Q = asarray(atleast_1d(Q), float)
+    Parameters
+    ----------
+    q : float
+        Test statistics.
+    w : array_like
+        Weights of the linear combination.
 
-    if Q_resampling is not None:
-        Q_all = c(Q, Q_resampling)
-    else:
-        Q_all = Q
+    Returns
+    -------
+    float
+        Estimated p-value.
+    """
 
-    re = _pvalue_lambda(_lambda(K), Q_all)
+    q = asarray(atleast_1d(q), float)
+
+    re = _pvalue_lambda(_lambda(w), q)
     param = dict()
     param["liu_pval"] = re["p_val_liu"][0]
     param["Is_Converged"] = re["is_converge"][0]
@@ -147,23 +152,25 @@ def _liu_params_mod_lambda(lambda_):
 
 def _liu_pvalue_mod_lambda_zero(Q, muQ, muX, sigmaQ, sigmaX, l, d):
 
-    temp = c(
-        0.05,
-        10 ** -10,
-        10 ** -20,
-        10 ** -30,
-        10 ** -40,
-        10 ** -50,
-        10 ** -60,
-        10 ** -70,
-        10 ** -80,
-        10 ** -90,
-        10 ** -100,
-    )
+    assert False
+    # TODO: Unit tests are not currently testing this function.
+    # temp = c(
+    #     0.05,
+    #     10 ** -10,
+    #     10 ** -20,
+    #     10 ** -30,
+    #     10 ** -40,
+    #     10 ** -50,
+    #     10 ** -60,
+    #     10 ** -70,
+    #     10 ** -80,
+    #     10 ** -90,
+    #     10 ** -100,
+    # )
 
-    out = qchisq(temp, df=l, ncp=d, lower_tail=False)
+    # out = qchisq(temp, df=l, ncp=d, lower_tail=False)
 
-    IDX = max(where(out < Q.Norm1))
+    # IDX = max(where(out < Q.Norm1))
 
-    pval_msg = "Pvalue < %e" % temp[IDX]
-    return pval_msg
+    # pval_msg = "Pvalue < %e" % temp[IDX]
+    # return pval_msg
