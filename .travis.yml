@@ -11,3 +11,12 @@ notifications:
     - danilo.horta@gmail.com
     on_success: never
     on_failure: always
+deploy:
+  provider: pypi
+  user: dhorta
+  password:
+    secure: ZhgHu8BOYfUf2krd8P1qMoREUlxtTSoUCXcjIszr1jJM5BT8iVDANYBnGeJlkaTemHsjyhJIcLut2LFaPlBc7EpBMyGY0G8f4oOJa6Lo9SZfq714C573SrZB8KUsmt8FRNm9m0Y9uqrO+FZMFE7YgaqQBi06SrctDuzzV3tBFlS8Xq6v64FLX9a6YR84POhb+W7VCja6rqihl99uRpX6eXnLdJfeCd6G+lsA0pwYANxaP0+K84qqipWGiABYO+Ly9SgckvHfnOuCX/Az5aRjGGrtLaWVhvscaZBv1cp402cFhS31WF0u0BDJ+5G0DxbHBTluEPUFBGnpH5hUkyPNsDoB6uust8rzjW3fyyhQiGMUMFgAscCCfb5ubcpAH8oZz4a8/jskzZTqDT+tELXZ3tsNqsIRG0ZWo60lsgyZlf1jc70lu2mTAk1hHoD94SwMibclxpj1sq7orq6sPoX30H9q83xyKL/YURelUm5cIOcG8LIJX+cvBo9ytVTDC1/UNuAtKIdFSTR32mRcM0k70LViVhBaxxy5TGYd5Yx34kT89eas5ly/Dw2dlyokCX7v5RX5nvjTsfnZbsNKi+xdbHdVKNRDQmvFkAghVWUOaGVz73TdeBQo9TR6zjf/N+qssaUDD5iElDmoR0yV/4o1BSiAgPBvWF2r73SusdQfIDo=
+  on:
+    tags: true
+    repo: limix/chiscore
+    branch: master
