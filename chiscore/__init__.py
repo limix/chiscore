@@ -1,6 +1,6 @@
 """
-SKAT test
-=========
+Chiscore package
+================
 
 Estimate the joint significance of test statistics derived from linear combination
 of chi-squared distributions.

@@ -1,4 +1,4 @@
-from skat import mod_liu, data_file
+from chiscore import mod_liu, data_file
 from numpy import load
 from numpy.testing import assert_allclose
 

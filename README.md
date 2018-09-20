@@ -1,6 +1,6 @@
-# skat
+# chiscore
 
-[![Travis](https://img.shields.io/travis/com/limix/skat.svg?style=flat-square&label=linux%20%2F%20macos%20build)](https://travis-ci.com/limix/skat) [![AppVeyor](https://img.shields.io/appveyor/ci/Horta/skat.svg?style=flat-square&label=windows%20build)](https://ci.appveyor.com/project/Horta/skat)
+[![Travis](https://img.shields.io/travis/com/limix/chiscore.svg?style=flat-square&label=linux%20%2F%20macos%20build)](https://travis-ci.com/limix/chiscore) [![AppVeyor](https://img.shields.io/appveyor/ci/Horta/chiscore.svg?style=flat-square&label=windows%20build)](https://ci.appveyor.com/project/Horta/chiscore)
 
 Estimate the joint significance of test statistics derived from linear combination
 of chi-squared distributions.
@@ -11,14 +11,14 @@ We recommend installing it via
 [conda](http://conda.pydata.org/docs/index.html):
 
 ```bash
-conda install -c conda-forge skat
+conda install -c conda-forge chiscore
 ```
 
-Alternatively, skat can also be installed using
+Alternatively, chiscore can also be installed using
 [pip](https://pypi.python.org/pypi/pip):
 
 ```bash
-pip install skat
+pip install chiscore
 ```
 
 ## Running the tests
@@ -26,7 +26,7 @@ pip install skat
 After installation, you can test it
 
 ```bash
-python -c "import skat; skat.test()"
+python -c "import chiscore; chiscore.test()"
 ```
 
 as long as you have [pytest](https://docs.pytest.org/en/latest/).
@@ -41,4 +41,4 @@ TODO
 
 ## License
 
-This project is licensed under the [MIT License](https://raw.githubusercontent.com/limix/skat/master/LICENSE.md).
+This project is licensed under the [MIT License](https://raw.githubusercontent.com/limix/chiscore/master/LICENSE.md).

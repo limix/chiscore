@@ -1,4 +1,4 @@
-from skat import davies_pvalue, data_file
+from chiscore import davies_pvalue, data_file
 from numpy import load
 from numpy.testing import assert_allclose
 

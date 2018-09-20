@@ -53,7 +53,7 @@ def optimal_davies_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin=N
     grid = asarray(grid, float)
 
     args = (q, mu, var, kur, w, remain_var, df, trho, grid)
-    re = quad(_skat_davies_function, 0, 40, args, limit=1000, epsabs=10 ** -12)
+    re = quad(_davies_function, 0, 40, args, limit=1000, epsabs=10 ** -12)
 
     # Might want to add this back in
     if re[1] > 1e-6:
@@ -85,9 +85,7 @@ def _skat_liu_pvalue(
     # return pvalue
 
 
-def _skat_davies_function(
-    x, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_all
-):
+def _davies_function(x, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_all):
     temp1 = tau * x
 
     temp = divide(

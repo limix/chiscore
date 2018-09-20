@@ -1,6 +1,6 @@
 include LICENSE.md
 include README.md
 include version.py
-include skat/_data/davies_pvalue.npz
-include skat/_data/optimal_davies_pvalue.npz
-include skat/_data/mod_liu.npz
+include chiscore/_data/davies_pvalue.npz
+include chiscore/_data/optimal_davies_pvalue.npz
+include chiscore/_data/mod_liu.npz

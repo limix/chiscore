@@ -2,7 +2,7 @@ language: python
 python:
 - 3.6
 env:
-- PKG_NAME=skat
+- PKG_NAME=chiscore
 script:
 - bash <(curl -fsSL https://raw.githubusercontent.com/horta/ci/master/travis.sh)
 notifications:
