@@ -4,12 +4,12 @@ from scipy.integrate import quad
 from chi2comb import chi2comb_cdf, ChiSquared
 
 
-def optimal_davies_pvalue(qmin, mu, var, kur, w, remain_var, df, trho, grid, pmin=None):
+def optimal_davies_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin=None):
     r"""Joint significance of statistics derived from chi2-squared distributions.
 
     Parameters
     ----------
-    qmin : array_like
+    q : array_like
         Most significant of the independent test statistics, qₘᵢₙ(𝜌ᵥ) [1].
     mu : float
         Mean of the linear combination of the chi-squared distributions.
@@ -41,7 +41,7 @@ def optimal_davies_pvalue(qmin, mu, var, kur, w, remain_var, df, trho, grid, pmi
     [1] Lee, Seunggeun, Michael C. Wu, and Xihong Lin. "Optimal tests for rare variant
     effects in sequencing association studies." Biostatistics 13.4 (2012): 762-775.
     """
-    qmin = asarray(qmin, float)
+    q = asarray(q, float)
     mu = float(mu)
     var = float(var)
     kur = float(kur)
@@ -52,12 +52,12 @@ def optimal_davies_pvalue(qmin, mu, var, kur, w, remain_var, df, trho, grid, pmi
     trho = asarray(trho, float)
     grid = asarray(grid, float)
 
-    args = (qmin, mu, var, kur, w, remain_var, df, trho, grid)
+    args = (q, mu, var, kur, w, remain_var, df, trho, grid)
     re = quad(_skat_davies_function, 0, 40, args, limit=1000, epsabs=10 ** -12)
 
     # Might want to add this back in
     if re[1] > 1e-6:
-        re = _skat_liu_pvalue(qmin, mu, var, kur, w, remain_var, df, trho, grid, pmin)
+        re = _skat_liu_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin)
         return re
 
     pvalue = 1 - re[0]

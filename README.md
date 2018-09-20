@@ -2,6 +2,8 @@
 
 [![Travis](https://img.shields.io/travis/com/limix/skat.svg?style=flat-square&label=linux%20%2F%20macos%20build)](https://travis-ci.com/limix/skat) [![AppVeyor](https://img.shields.io/appveyor/ci/Horta/skat.svg?style=flat-square&label=windows%20build)](https://ci.appveyor.com/project/Horta/skat)
 
+Estimate the joint significance of test statistics derived from linear combination
+of chi-squared distributions.
 
 ## Install
 
@@ -31,7 +33,7 @@ as long as you have [pytest](https://docs.pytest.org/en/latest/).
 
 ## Usage
 
-Example
+TODO
 
 ## Authors
 

@@ -2,17 +2,29 @@ from numpy import sqrt
 from scipy.stats import chi2
 
 
-def mod_liu(q, lambda_):
-    # q: test statistic
-    # lambda_:eigenvalues (weights of the linear combination...)
+def mod_liu(q, w):
+    r"""Joint significance of statistics derived from chi2-squared distributions.
 
-    c1 = sum(lambda_)
+    Parameters
+    ----------
+    q : float
+        Test statistics.
+    w : array_like
+        Weights of the linear combination.
 
-    c2 = sum(lambda_ ** 2)
+    Returns
+    -------
+    float
+        Estimated p-value.
+    """
 
-    c3 = sum(lambda_ ** 3)
+    c1 = sum(w)
 
-    c4 = sum(lambda_ ** 4)
+    c2 = sum(w ** 2)
+
+    c3 = sum(w ** 3)
+
+    c4 = sum(w ** 4)
 
     s1 = c3 / (c2 ** (3 / 2))
 
