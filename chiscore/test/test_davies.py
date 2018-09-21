@@ -9,3 +9,13 @@ def test_davies_pvalue():
 
     pval = davies_pvalue(*data["args"])["p_value"]
     assert_allclose(pval, data["pval"])
+
+
+def main():
+    q = 1.5
+    w = [[0.3, 5.0], [5.0, 1.5]]
+    davies_pvalue(q, w)
+
+
+if __name__ == "__main__":
+    main()

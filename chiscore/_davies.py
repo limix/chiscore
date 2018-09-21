@@ -23,6 +23,7 @@ def davies_pvalue(q, w):
     """
 
     q = asarray(atleast_1d(q), float)
+    w = asarray(w, float)
 
     re = _pvalue_lambda(_lambda(w), q)
     param = dict()

@@ -103,11 +103,12 @@ def _davies_function(x, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_
         min1_st = min1_temp * sd1 + MuQ
 
         chi2s = [ChiSquared(w, 0., 1) for w in lambda_]
-        dav_re = chi2comb_cdf(min1_st, chi2s, 0., lim=10000, atol=10 ** -6)
+        dav_re = chi2comb_cdf(min1_st, chi2s, 0., lim=10000, atol=10 ** -5)
 
         temp = 1 - dav_re[0]
         if dav_re[1] != 0:
-            raise RuntimeError("Could not estimate the cdf value.")
+            msg = "Could not estimate the cdf value: {}".format(str(dav_re))
+            raise RuntimeError(msg)
     if temp > 1:
         temp = 1
     re = (1 - temp) * chi2(df=1).pdf(x)

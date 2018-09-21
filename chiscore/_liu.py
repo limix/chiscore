@@ -1,4 +1,4 @@
-from numpy import sqrt
+from numpy import sqrt, asarray, sum
 from scipy.stats import chi2
 
 
@@ -17,6 +17,8 @@ def mod_liu(q, w):
     float
         Estimated p-value.
     """
+
+    w = asarray(w, float)
 
     c1 = sum(w)
 
