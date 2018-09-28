@@ -54,6 +54,7 @@ def optimal_davies_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin=N
 
     args = (q, mu, var, kur, w, remain_var, df, trho, grid)
     re = quad(_davies_function, 0, 40, args, limit=1000, epsabs=10 ** -12)
+    print(re)
 
     # Might want to add this back in
     if re[1] > 1e-6:
