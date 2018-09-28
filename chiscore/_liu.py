@@ -1,4 +1,4 @@
-from numpy import sqrt, asarray, sum
+from numpy import sqrt, asarray, sum, isfinite, all, atleast_1d
 from scipy.stats import chi2
 
 
@@ -18,7 +18,16 @@ def mod_liu(q, w):
         Estimated p-value.
     """
 
+    q = asarray(q, float)
+    if not all(isfinite(atleast_1d(q))):
+        raise ValueError("There are non-finite values in `q`.")
+
     w = asarray(w, float)
+    if not all(isfinite(atleast_1d(w))):
+        raise ValueError("There are non-finite values in `w`.")
+
+    d = sum(w)
+    w /= d
 
     c1 = sum(w)
 
@@ -43,6 +52,8 @@ def mod_liu(q, w):
         delta = s1 * a ** 3 - a ** 2
 
         l = a ** 2 - 2 * delta
+        if l < 0:
+            raise RuntimeError("This term cannot be negative.")
 
     else:
 
@@ -50,8 +61,8 @@ def mod_liu(q, w):
         l = 1 / s2
         a = sqrt(l)
 
-    Q_norm = (q - muQ) / sigmaQ * sqrt(2 * l) + l
+    Q_norm = (q/d - muQ) / sigmaQ * sqrt(2 * l) + l
 
     Qq = chi2(df=l).sf(Q_norm)
 
-    return (Qq, muQ, sigmaQ, l)
+    return (Qq, muQ * d, sigmaQ * d, l)
