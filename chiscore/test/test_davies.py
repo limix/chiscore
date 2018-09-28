@@ -7,8 +7,7 @@ def test_davies_pvalue():
     with data_file("davies_pvalue.npz") as filepath:
         data = load(filepath)
 
-    pval = davies_pvalue(*data["args"])["p_value"]
-    assert_allclose(pval, data["pval"])
+    assert_allclose(davies_pvalue(*data["args"]), data["pval"])
 
 
 def main():

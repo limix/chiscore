@@ -30,15 +30,15 @@ def davies_pvalue(q, w):
     param["liu_pval"] = re["p_val_liu"][0]
     param["Is_Converged"] = re["is_converge"][0]
 
-    p_value_resampling = None
+    # p_value_resampling = None
 
-    re = dict(
-        p_value=re["p_value"][0],
-        param=param,
-        p_value_resampling=p_value_resampling,
-        pval_zero_msg=re["pval_zero_msg"],
-    )
-    return re
+    # re = dict(
+    #     p_value=re["p_value"][0],
+    #     param=param,
+    #     p_value_resampling=p_value_resampling,
+    #     pval_zero_msg=re["pval_zero_msg"],
+    # )
+    return re["p_value"][0]
 
 
 def _pvalue_lambda(lambda_, Q):

@@ -7,7 +7,7 @@ def test_mod_liu():
     with data_file("mod_liu.npz") as filepath:
         data = load(filepath)
 
-    assert_allclose(mod_liu(data["args"][0][0], data["args"][1]), data["pliumod"])
+    assert_allclose(mod_liu(data["args"][0][0], data["args"][1]), data["pliumod"][0])
 
 
 def main():
