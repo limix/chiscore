@@ -3,6 +3,8 @@ from scipy.stats import chi2
 from scipy.integrate import quad
 from chi2comb import chi2comb_cdf, ChiSquared
 
+_EPSABS = 1e-12
+
 
 def optimal_davies_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin=None):
     r"""Joint significance of statistics derived from chi2-squared distributions.
@@ -53,8 +55,7 @@ def optimal_davies_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin=N
     grid = asarray(grid, float)
 
     args = (q, mu, var, kur, w, remain_var, df, trho, grid)
-    re = quad(_davies_function, 0, 40, args, limit=1000, epsabs=10 ** -12)
-    print(re)
+    re = quad(_davies_function, 0, 40, args, limit=1000, epsabs=_EPSABS, full_output=1)
 
     # Might want to add this back in
     if re[1] > 1e-6:
@@ -71,19 +72,16 @@ def optimal_davies_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin=N
 def _skat_liu_pvalue(
     pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_all, pmin=None
 ):
-    # TODO: Unit tests are not reaching this function yet.
-    assert False
-    #   re=integrate(_skat_liu_function, lower=0, upper=40, subdivisions=2000,
-    # pmin_q=pmin_q, MuQ=MuQ, VarQ=VarQ, KerQ=KerQ, lambda_ = lambda_,
-    # VarRemain= VarRemain,  Df= Df, tau = tau, r_all=r_all,abs_tol = 10**-25)
+    args = (pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_all)
+    re = quad(_skat_liu_func, 0, 40, args, limit=2000, epsabs=_EPSABS, full_output=1)
 
-    # pvalue = 1 - re[0]
+    pvalue = 1 - re[0]
 
-    # if pmin is not None:
-    #     if pmin * len(r_all) < pvalue:
-    #         pvalue = pmin * len(r_all)
+    if pmin is not None:
+        if pmin * len(r_all) < pvalue:
+            pvalue = pmin * len(r_all)
 
-    # return pvalue
+    return pvalue
 
 
 def _davies_function(x, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_all):
@@ -116,17 +114,13 @@ def _davies_function(x, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_
     return re
 
 
-def _skat_liu_function(x, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_all):
-    # TODO: Unit tests are not reaching this function yet.
-    assert False
-    # x = atleast_1d(x)
+def _skat_liu_func(x, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_all):
 
-    # temp1 = kron(tau, x.T)
+    temp1 = tau * x
 
-    # temp = (pmin_q - temp1) / (1 - r_all)
-    # temp_min = apply(temp, 2, min)
+    temp = (pmin_q - temp1) / (1 - r_all)
+    temp_min = min(temp)
 
-    # temp_q = (temp_min - MuQ) / sqrt(VarQ) * sqrt(2 * Df) + Df
-    # re = pchisq(temp_q, df=Df) * dchisq(x, df=1)
+    temp_q = (temp_min - MuQ) / sqrt(VarQ) * sqrt(2 * Df) + Df
 
-    # return re
+    return chi2(df=Df).cdf(temp_q) * chi2(df=1).pdf(x)
