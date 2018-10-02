@@ -61,4 +61,8 @@ def mod_liu(q, w):
         l = 1 / s2
         a = sqrt(l)
 
-    return chi2(df=l).sf((q / d - muQ) / sigmaQ * sqrt(2 * l) + l)
+    Q_norm = (q / d - muQ) / sigmaQ * sqrt(2 * l) + l
+
+    Qq = chi2(df=l).sf(Q_norm)[0]
+
+    return (Qq, muQ * d, sigmaQ * d, l)
