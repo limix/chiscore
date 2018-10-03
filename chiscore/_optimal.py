@@ -55,12 +55,13 @@ def optimal_davies_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin=N
     grid = asarray(grid, float)
 
     args = (q, mu, var, kur, w, remain_var, df, trho, grid)
-    re = quad(_davies_function, 0, 40, args, limit=1000, epsabs=_EPSABS, full_output=1)
-
-    # Might want to add this back in
-    if re[1] > 1e-6:
+    try:
+        u = _find_upper_bound(args)
+        re = quad(_davies_function, 0, u, args, limit=1000, epsabs=_EPSABS, full_output=1)
+        if re[1] > 1e-6:
+            re = _skat_liu_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin)
+    except RuntimeError:
         re = _skat_liu_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin)
-        return re
 
     pvalue = 1 - re[0]
     if pmin is not None:
@@ -83,6 +84,18 @@ def _skat_liu_pvalue(
 
     return pvalue
 
+def _find_upper_bound(args):
+    v = 0
+    u = 40.
+    imax = 1000
+    while v == 0 and imax > 0:
+        v = _davies_function(u, *args)
+        u /= 2
+        imax -= 1
+
+    if imax == 0:
+        raise RuntimeError("Could not find an upper bound.")
+    return u * 2
 
 def _davies_function(x, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_all):
     temp1 = tau * x

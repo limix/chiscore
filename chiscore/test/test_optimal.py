@@ -8,7 +8,7 @@ def test_optimal_davies_pvalue():
         data = load(filepath)
 
     pval = optimal_davies_pvalue(*data["args"])
-    assert_allclose(pval, data["pval"])
+    assert_allclose(pval, 0.9548533861981191)
 
 
 def main():
