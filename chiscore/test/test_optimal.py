@@ -8,7 +8,7 @@ def test_optimal_davies_pvalue():
         data = load(filepath)
 
     pval = optimal_davies_pvalue(*data["args"])
-    assert_allclose(pval, 0.9548533861981191)
+    assert_allclose(pval, 0.9547608685218306)
 
 
 def test_optimal_davies_pvalue_nan():
@@ -27,6 +27,24 @@ def test_optimal_davies_pvalue_nan():
         data["rho_list"],
     )
     assert_allclose(pval, 0.39344574097360585)
+
+
+def test_optimal_davies_pvalue_bound():
+    with data_file("bound.npz") as filepath:
+        data = dict(load(filepath))
+
+    pval = optimal_davies_pvalue(
+        data["qmin"],
+        data["MuQ"],
+        data["VarQ"],
+        data["KerQ"],
+        data["eigh"],
+        data["vareta"],
+        data["Df"],
+        data["tau_rho"],
+        data["rho_list"],
+    )
+    assert_allclose(pval, 0.22029543318607503)
 
 
 def main():

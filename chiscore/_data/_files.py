@@ -8,6 +8,7 @@ _filenames = [
     "optimal_davies_pvalue.npz",
     "mod_liu.npz",
     "danilo_nan.npz",
+    "bound.npz",
 ]
 
 

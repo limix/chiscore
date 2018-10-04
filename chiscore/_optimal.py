@@ -92,16 +92,30 @@ def _skat_liu_pvalue(
 
 def _find_upper_bound(args):
     v = 0
-    u = 40.
+    u = 80.
     imax = 1000
-    while v == 0 and imax > 0:
-        v = _davies_function(u, *args)
+    while v <= 1e-14 and imax > 0:
         u /= 2
+        v = _davies_function(u, *args)
         imax -= 1
 
     if imax == 0:
         raise RuntimeError("Could not find an upper bound.")
     return u * 2
+
+
+def _davies_function_vec(
+    x, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_all
+):
+    y = []
+    for xi in x:
+        y.append(
+            _davies_function(
+                xi, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_all
+            )
+        )
+
+    return asarray(y, float)
 
 
 def _davies_function(x, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_all):
