@@ -11,6 +11,24 @@ def test_optimal_davies_pvalue():
     assert_allclose(pval, 0.9548533861981191)
 
 
+def test_optimal_davies_pvalue_nan():
+    with data_file("danilo_nan.npz") as filepath:
+        data = dict(load(filepath))
+
+    pval = optimal_davies_pvalue(
+        data["qmin"],
+        data["MuQ"],
+        data["VarQ"],
+        data["KerQ"],
+        data["eigh"],
+        data["vareta"],
+        data["Df"],
+        data["tau_rho"],
+        data["rho_list"],
+    )
+    assert_allclose(pval, 0.39344574097360585)
+
+
 def main():
     q = [1.5, 3.0]
     mu = -0.5
