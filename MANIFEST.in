@@ -3,6 +3,7 @@ include chiscore/_data/danilo_nan.npz
 include chiscore/_data/davies_pvalue.npz
 include chiscore/_data/mod_liu.npz
 include chiscore/_data/optimal_davies_pvalue.npz
+include chiscore/_data/inf.npz
 include LICENSE.md
 include README.md
 include version.py

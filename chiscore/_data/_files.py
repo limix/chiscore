@@ -9,6 +9,7 @@ _filenames = [
     "mod_liu.npz",
     "danilo_nan.npz",
     "bound.npz",
+    "inf.npz",
 ]
 
 

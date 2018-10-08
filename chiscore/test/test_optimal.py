@@ -46,6 +46,24 @@ def test_optimal_davies_pvalue_bound():
     )
     assert_allclose(pval, 0.22029543318607503)
 
+def test_optimal_davies_inf():
+    with data_file("bound.npz") as filepath:
+        data = dict(load(filepath))
+
+    pval = optimal_davies_pvalue(
+        data["qmin"],
+        data["MuQ"],
+        data["VarQ"],
+        data["KerQ"],
+        data["eigh"],
+        data["vareta"],
+        data["Df"],
+        data["tau_rho"],
+        data["rho_list"],
+        1e-30
+    )
+    assert_allclose(pval, 8e-30)
+
 
 def main():
     q = [1.5, 3.0]

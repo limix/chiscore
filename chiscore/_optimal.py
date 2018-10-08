@@ -70,7 +70,7 @@ def optimal_davies_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin=N
         pvalue = _skat_liu_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin)
 
     if pmin is not None:
-        if pmin * len(grid) < pvalue:
+        if pmin * len(grid) < abs(pvalue):
             pvalue = pmin * len(grid)
     return pvalue
 
