@@ -1,4 +1,4 @@
-from numpy import sqrt, full, inf, asarray, divide, min
+from numpy import sqrt, full, inf, asarray, divide, min, exp, log
 from scipy.stats import chi2
 from scipy.integrate import quad
 from chi2comb import chi2comb_cdf, ChiSquared
@@ -54,7 +54,9 @@ def optimal_davies_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin=N
     trho = asarray(trho, float)
     grid = asarray(grid, float)
 
-    args = (q, mu, var, kur, w, remain_var, df, trho, grid)
+    lambda_threshold = sum(w) * 10 ** 4
+    chi2s = [ChiSquared(i, 0.0, 1) for i in w]
+    args = (q, mu, var, kur, lambda_threshold, remain_var, df, trho, grid, chi2s)
     try:
         u = _find_upper_bound(args)
         re = quad(
@@ -92,7 +94,7 @@ def _skat_liu_pvalue(
 
 def _find_upper_bound(args):
     v = 0
-    u = 80.
+    u = 80.0
     imax = 1000
     while v <= 1e-14 and imax > 0:
         u /= 2
@@ -118,7 +120,9 @@ def _davies_function_vec(
     return asarray(y, float)
 
 
-def _davies_function(x, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_all):
+def _davies_function(
+    x, pmin_q, MuQ, VarQ, KerQ, lambda_thr, VarRemain, Df, tau, r_all, chi2s
+):
     temp1 = tau * x
 
     temp = divide(
@@ -128,24 +132,31 @@ def _davies_function(x, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_
 
     re = 0
     min1 = temp_min
-    if min1 > sum(lambda_) * 10 ** 4:
+    if min1 > lambda_thr:
         temp = 0
     else:
         min1_temp = min1 - MuQ
         sd1 = sqrt(VarQ - VarRemain) / sqrt(VarQ)
         min1_st = min1_temp * sd1 + MuQ
 
-        chi2s = [ChiSquared(w, 0., 1) for w in lambda_]
-        dav_re = chi2comb_cdf(min1_st, chi2s, 0., lim=10000, atol=10 ** -5)
+        dav_re = chi2comb_cdf(min1_st, chi2s, 0.0, lim=10000, atol=10 ** -5)
 
         temp = 1 - dav_re[0]
         if dav_re[1] != 0:
             msg = "Could not estimate the cdf value: {}".format(str(dav_re))
             raise RuntimeError(msg)
-    if temp > 1:
-        temp = 1
-    re = (1 - temp) * chi2(df=1).pdf(x)
+    if temp >= 1:
+        re = 0
+    else:
+        re = (1 - temp) * _chi2_df1_pdf(x)
+
     return re
+
+
+def _chi2_df1_pdf(x):
+    # gammaln(1 / 2.0) + log(2) / 2.0
+    a = 0.918938533204672669540968854562
+    return exp(-0.5 * log(x) - x / 2.0 - a)
 
 
 def _skat_liu_func(x, pmin_q, MuQ, VarQ, KerQ, lambda_, VarRemain, Df, tau, r_all):
