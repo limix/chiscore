@@ -1,9 +1,10 @@
 import sys
+
 import numpy as np
-from numpy import where, mean, zeros, sqrt, atleast_1d, asarray
+from chi2comb import ChiSquared, chi2comb_cdf
+from numpy import asarray, atleast_1d, mean, sqrt, where, zeros
 from numpy.linalg import eigvalsh
 from scipy.stats import chi2
-from chi2comb import chi2comb_cdf, ChiSquared
 
 
 def davies_pvalue(q, w):
@@ -30,14 +31,6 @@ def davies_pvalue(q, w):
     param["liu_pval"] = re["p_val_liu"][0]
     param["Is_Converged"] = re["is_converge"][0]
 
-    # p_value_resampling = None
-
-    # re = dict(
-    #     p_value=re["p_value"][0],
-    #     param=param,
-    #     p_value_resampling=p_value_resampling,
-    #     pval_zero_msg=re["pval_zero_msg"],
-    # )
     return re["p_value"][0]
 
 
@@ -52,8 +45,8 @@ def _pvalue_lambda(lambda_, Q):
     p_val_liu = _liu_pvalue_mod_lambda(Q, lambda_)
 
     for i in range(n1):
-        chi2s = [ChiSquared(w, 0., 1) for w in lambda_]
-        out = chi2comb_cdf(Q[i], chi2s, 0., lim=10000, atol=10 ** -6)
+        chi2s = [ChiSquared(w, 0.0, 1) for w in lambda_]
+        out = chi2comb_cdf(Q[i], chi2s, 0.0, lim=10000, atol=10 ** -6)
 
         p_val[i] = 1 - out[0]
 
@@ -141,7 +134,7 @@ def _liu_params_mod_lambda(lambda_):
         d = s1 * a ** 3 - a ** 2
         ll = a ** 2 - 2 * d
     else:
-        ll = 1. / s2
+        ll = 1.0 / s2
         a = sqrt(ll)
         d = 0
 
