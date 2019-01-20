@@ -1,6 +1,7 @@
-from chiscore import optimal_davies_pvalue, data_file
 from numpy import load
 from numpy.testing import assert_allclose
+
+from chiscore import data_file, optimal_davies_pvalue
 
 
 def test_optimal_davies_pvalue():
@@ -46,6 +47,7 @@ def test_optimal_davies_pvalue_bound():
     )
     assert_allclose(pval, 0.22029543318607503)
 
+
 def test_optimal_davies_inf():
     with data_file("bound.npz") as filepath:
         data = dict(load(filepath))
@@ -60,7 +62,7 @@ def test_optimal_davies_inf():
         data["Df"],
         data["tau_rho"],
         data["rho_list"],
-        1e-30
+        1e-30,
     )
     assert_allclose(pval, 8e-30)
 
@@ -74,7 +76,7 @@ def main():
     remain_var = 0.5
     df = 3.4
     trho = [5.1, 0.2]
-    grid = [0., 0.01]
+    grid = [0.0, 0.01]
     print(optimal_davies_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid))
 
 
