@@ -1,7 +1,8 @@
 from numpy import load
 from numpy.testing import assert_allclose
 
-from chiscore import data_file, optimal_davies_pvalue
+from chiscore import optimal_davies_pvalue
+from chiscore._data import data_file
 
 
 def test_optimal_davies_pvalue():

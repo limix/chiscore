@@ -1,7 +1,8 @@
-from numpy import sqrt, full, inf, asarray, divide, min, exp, log
-from scipy.stats import chi2
+from numpy import asarray, divide, exp, full, inf, log, min, sqrt
 from scipy.integrate import quad
-from chi2comb import chi2comb_cdf, ChiSquared
+from scipy.stats import chi2
+
+from chi2comb import ChiSquared, chi2comb_cdf
 
 _EPSABS = 1e-12
 
@@ -41,7 +42,7 @@ def optimal_davies_pvalue(q, mu, var, kur, w, remain_var, df, trho, grid, pmin=N
     References
     ----------
     [1] Lee, Seunggeun, Michael C. Wu, and Xihong Lin. "Optimal tests for rare variant
-    effects in sequencing association studies." Biostatistics 13.4 (2012): 762-775.
+        effects in sequencing association studies." Biostatistics 13.4 (2012): 762-775.
     """
     q = asarray(q, float)
     mu = float(mu)

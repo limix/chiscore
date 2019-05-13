@@ -1,12 +1,11 @@
-from os.path import dirname, realpath, join
-import tempfile
 import shutil
+import tempfile
 import warnings
+from os.path import dirname, join, realpath
 
 _filenames = [
     "davies_pvalue.npz",
     "optimal_davies_pvalue.npz",
-    "mod_liu.npz",
     "danilo_nan.npz",
     "bound.npz",
     "inf.npz",
@@ -15,6 +14,8 @@ _filenames = [
 
 class data_file(object):
     def __init__(self, filenames):
+        global _filenames
+
         self._unlist = False
         if not isinstance(filenames, (tuple, list)):
             filenames = [filenames]

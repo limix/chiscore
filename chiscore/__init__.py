@@ -9,30 +9,21 @@ Functions
 ---------
 davies_pvalue
 optimal_davies_pvalue
-mod_liu
+liu_sf
 
 References
 ----------
 [1] Lee, Seunggeun, Michael C. Wu, and Xihong Lin. "Optimal tests for rare variant
-effects in sequencing association studies." Biostatistics 13.4 (2012): 762-775.
+    effects in sequencing association studies." Biostatistics 13.4 (2012): 762-775.
+[2] Liu, H., Tang, Y., & Zhang, H. H. (2009). A new chi-square approximation to the
+    distribution of non-negative definite quadratic forms in non-central normal
+    variables. Computational Statistics & Data Analysis, 53(4), 853-856.
 """
-
-from __future__ import absolute_import
-
-from ._testit import test
 from ._davies import davies_pvalue
+from ._liu import liu_sf
 from ._optimal import optimal_davies_pvalue
-from ._liu import mod_liu, liu_sf
-from ._data import data_file
+from ._testit import test
 
 __version__ = "0.1.0"
 
-__all__ = [
-    "__version__",
-    "test",
-    "davies_pvalue",
-    "optimal_davies_pvalue",
-    "mod_liu",
-    "data_file",
-    "liu_sf",
-]
+__all__ = ["__version__", "davies_pvalue", "liu_sf", "optimal_davies_pvalue", "test"]

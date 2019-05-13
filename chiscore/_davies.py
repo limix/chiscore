@@ -1,14 +1,16 @@
 import sys
 
 import numpy as np
-from chi2comb import ChiSquared, chi2comb_cdf
 from numpy import asarray, atleast_1d, mean, sqrt, where, zeros
 from numpy.linalg import eigvalsh
 from scipy.stats import chi2
 
+from chi2comb import ChiSquared, chi2comb_cdf
+
 
 def davies_pvalue(q, w):
-    r"""Joint significance of statistics derived from chi2-squared distributions.
+    """
+    Joint significance of statistics derived from chi2-squared distributions.
 
     Parameters
     ----------
@@ -89,7 +91,6 @@ def _pvalue_lambda(lambda_, Q):
 
 
 def _lambda(K):
-
     lambda1 = eigvalsh(K)
     lambda1 = np.sort(lambda1)
     idx1 = where(lambda1 >= 0)[0]
