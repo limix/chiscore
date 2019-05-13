@@ -7,7 +7,7 @@ from chiscore._data import data_file
 
 def test_optimal_davies_pvalue():
     with data_file("optimal_davies_pvalue.npz") as filepath:
-        data = load(filepath)
+        data = load(filepath, allow_pickle=True)
 
     pval = optimal_davies_pvalue(*data["args"])
     assert_allclose(pval, 0.9547608685218306)
@@ -33,7 +33,7 @@ def test_optimal_davies_pvalue_nan():
 
 def test_optimal_davies_pvalue_bound():
     with data_file("bound.npz") as filepath:
-        data = dict(load(filepath))
+        data = dict(load(filepath, allow_pickle=True))
 
     pval = optimal_davies_pvalue(
         data["qmin"],
@@ -51,7 +51,7 @@ def test_optimal_davies_pvalue_bound():
 
 def test_optimal_davies_inf():
     with data_file("bound.npz") as filepath:
-        data = dict(load(filepath))
+        data = dict(load(filepath, allow_pickle=True))
 
     pval = optimal_davies_pvalue(
         data["qmin"],
