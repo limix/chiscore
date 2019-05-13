@@ -1,68 +1,40 @@
-from numpy import sqrt, asarray, sum, isfinite, all, atleast_1d
-from scipy.stats import chi2
+from numpy import sqrt, asarray, sum, maximum
+from scipy.stats import ncx2
 
 
-def mod_liu(q, w):
-    r"""Joint significance of statistics derived from chi2-squared distributions.
-
-    Parameters
-    ----------
-    q : float
-        Test statistics.
-    w : array_like
-        Weights of the linear combination.
-
-    Returns
-    -------
-    float
-        Estimated p-value.
+def liu_sf(t, lambs, dofs, deltas):
     """
+    Liu approximation to linear combination of noncentral chi-squared variables.
+    """
+    t = asarray(t, float)
+    lambs = asarray(lambs, float)
+    dofs = asarray(dofs, float)
+    deltas = asarray(deltas, float)
 
-    q = asarray(q, float)
-    if not all(isfinite(atleast_1d(q))):
-        raise ValueError("There are non-finite values in `q`.")
+    lambs = {i: lambs ** i for i in range(1, 5)}
 
-    w = asarray(w, float)
-    if not all(isfinite(atleast_1d(w))):
-        raise ValueError("There are non-finite values in `w`.")
+    c = {i: sum(lambs[i] * dofs) + i * sum(lambs[i] * deltas) for i in range(1, 5)}
 
-    d = sum(w)
-    w /= d
-
-    c1 = sum(w)
-
-    c2 = sum(w ** 2)
-
-    c3 = sum(w ** 3)
-
-    c4 = sum(w ** 4)
-
-    s1 = c3 / (c2 ** (3 / 2))
-
-    s2 = c4 / c2 ** 2
-
-    muQ = c1
-
-    sigmaQ = sqrt(2 * c2)
+    s1 = c[3] / sqrt(c[2]) ** 3
+    s2 = c[4] / c[2] ** 2
 
     if s1 ** 2 > s2:
-
         a = 1 / (s1 - sqrt(s1 ** 2 - s2))
-
-        delta = s1 * a ** 3 - a ** 2
-
-        l = a ** 2 - 2 * delta
-        if l < 0:
-            raise RuntimeError("This term cannot be negative.")
-
+        delta_x = s1 * a ** 3 - a ** 2
+        dof_x = a ** 2 - 2 * delta_x
     else:
+        a = 1 / s1
+        delta_x = 0
+        dof_x = 1 / s1 ** 2
 
-        delta = 0
-        l = 1 / s2
-        a = sqrt(l)
+    mu_q = c[1]
+    sigma_q = sqrt(2 * c[2])
 
-    Q_norm = (q / d - muQ) / sigmaQ * sqrt(2 * l) + l
+    mu_x = dof_x + delta_x
+    sigma_x = sqrt(2 * (dof_x + 2 * delta_x))
 
-    Qq = atleast_1d(chi2(df=l).sf(Q_norm))[0]
+    tstar = (t - mu_q) / sigma_q
+    tfinal = tstar * sigma_x + mu_x
 
-    return (Qq, muQ * d, sigmaQ * d, l)
+    p = ncx2.sf(tfinal, dof_x, maximum(delta_x, 1e-9))
+    return (p, dof_x, delta_x, mu_q, sigma_q)

@@ -22,10 +22,10 @@ from __future__ import absolute_import
 from ._testit import test
 from ._davies import davies_pvalue
 from ._optimal import optimal_davies_pvalue
-from ._liu import mod_liu
+from ._liu import mod_liu, liu_sf
 from ._data import data_file
 
-__version__ = "0.0.16"
+__version__ = "0.1.0"
 
 __all__ = [
     "__version__",
@@ -34,4 +34,5 @@ __all__ = [
     "optimal_davies_pvalue",
     "mod_liu",
     "data_file",
+    "liu_sf",
 ]
