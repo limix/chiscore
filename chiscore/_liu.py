@@ -2,7 +2,7 @@ from numpy import asarray, maximum, sqrt, sum
 from scipy.stats import ncx2
 
 
-def liu_sf(t, lambs, dofs, deltas):
+def liu_sf(t, lambs, dofs, deltas, kurtosis=False):
     """
     Liu approximation to linear combination of noncentral chi-squared variables.
 
@@ -19,6 +19,23 @@ def liu_sf(t, lambs, dofs, deltas):
 
     where 𝑡⁺ = (𝑡 - 𝜇₀) / 𝜎₀, 𝜇ₓ = 𝑙 + 𝛿, and 𝜎ₓ = √(𝑙 + 2𝛿).
     The mean and standard deviation of 𝑋 are given by 𝜇₀ and 𝜎₀.
+
+    Then ``kurtosis=True``, the approximation is done by matching the kurtosis, rather
+    than the skewness, as derived in [2].
+
+    Parameters
+    ----------
+    t : array_like
+        Points at which the survival function will be applied, Pr(𝑋 > 𝑡).
+    lambs : array_like
+        Weights λᵢ.
+    dofs : array_like
+        Degrees of freedom, hᵢ.
+    deltas : array_like
+        Noncentrality parameters, 𝛿ᵢ.
+    kurtosis : bool, optional
+        ``True`` for using the modified approach proposed in [2]. ``False`` for using
+        the original approach proposed in [1]. Defaults to ``False``.
 
     Returns
     -------
@@ -63,6 +80,8 @@ def liu_sf(t, lambs, dofs, deltas):
     [1] Liu, H., Tang, Y., & Zhang, H. H. (2009). A new chi-square approximation to the
         distribution of non-negative definite quadratic forms in non-central normal
         variables. Computational Statistics & Data Analysis, 53(4), 853-856.
+    [2] Lee, Seunggeun, Michael C. Wu, and Xihong Lin. "Optimal tests for rare variant
+        effects in sequencing association studies." Biostatistics 13.4 (2012): 762-775.
     """
     t = asarray(t, float)
     lambs = asarray(lambs, float)
@@ -82,9 +101,13 @@ def liu_sf(t, lambs, dofs, deltas):
         delta_x = s1 * a ** 3 - a ** 2
         dof_x = a ** 2 - 2 * delta_x
     else:
-        a = 1 / s1
         delta_x = 0
-        dof_x = 1 / s12
+        if kurtosis:
+            a = 1 / sqrt(s2)
+            dof_x = 1 / s2
+        else:
+            a = 1 / s1
+            dof_x = 1 / s12
 
     mu_q = c[1]
     sigma_q = sqrt(2 * c[2])
