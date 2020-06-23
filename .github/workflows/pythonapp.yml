@@ -1,0 +1,43 @@
+name: Python application
+
+on: [push]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.7
+    - name: Install dependencies
+      run: |
+        python -m pip install pip --upgrade
+    - name: Lint with flake8
+      run: |
+        pip install flake8
+        flake8 . --show-source --statistics
+    - name: Test with pytest
+      run: |
+        pip install pytest --upgrade
+        python setup.py test
+    - name: Install it
+      run: |
+        pip install .
+    - name: Test installation
+      run: |
+        pushd ~/
+        python -c "import sys; import fasta_reader; sys.exit(fasta_reader.test())"
+        popd
+    - name: Build source distribution
+      run: |
+        python setup.py sdist
+    - name: Publish package
+      if: github.event_name == 'push' && startsWith(github.event.ref, 'refs/tags')
+      uses: pypa/gh-action-pypi-publish@master
+      with:
+        user: __token__
+        password: ${{ secrets.pypi_password }}
