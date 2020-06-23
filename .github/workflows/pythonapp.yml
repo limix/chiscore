@@ -30,7 +30,7 @@ jobs:
     - name: Test installation
       run: |
         pushd ~/
-        python -c "import sys; import fasta_reader; sys.exit(fasta_reader.test())"
+        python -c "import sys; import chiscore; sys.exit(chiscore.test())"
         popd
     - name: Build source distribution
       run: |
