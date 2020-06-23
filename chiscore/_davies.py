@@ -27,6 +27,10 @@ def davies_pvalue(q, w):
 
     q = asarray(atleast_1d(q), float)
     w = asarray(w, float)
+    maxq = q.max()
+    if maxq > 0:
+        q = q / maxq
+        w = w / maxq
 
     re = _pvalue_lambda(_lambda(w), q)
     param = dict()
@@ -111,9 +115,10 @@ def _liu_pvalue_mod_lambda(Q_all, lambda_, log_p=False):
     Q_Norm1 = Q_Norm * param["sigmaX"] + param["muX"]
 
     if log_p:
-        assert False
+        msg = "Please, contact the developer with the input that causes this."
+        raise NotImplementedError(msg)
         # Q_Norm1 = exp(Q_Norm1)
-    p_value = 1 - chi2.cdf(Q_Norm1, df=param["ll"], loc=param["d"])
+    p_value = chi2.sf(Q_Norm1, df=param["ll"], loc=param["d"])
 
     return p_value
 
