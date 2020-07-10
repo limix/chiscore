@@ -1,7 +1,8 @@
-from chiscore import davies_pvalue
-from chiscore._data import data_file
 from numpy import load
 from numpy.testing import assert_allclose
+
+from chiscore import davies_pvalue
+from chiscore._data import data_file
 
 
 def test_davies_pvalue():

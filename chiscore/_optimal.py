@@ -1,8 +1,7 @@
+from chi2comb import ChiSquared, chi2comb_cdf
 from numpy import asarray, divide, exp, full, inf, log, min, sqrt
 from scipy.integrate import quad
 from scipy.stats import chi2
-
-from chi2comb import ChiSquared, chi2comb_cdf
 
 _EPSABS = 1e-12
 

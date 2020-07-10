@@ -1,11 +1,10 @@
 import sys
 
 import numpy as np
+from chi2comb import ChiSquared, chi2comb_cdf
 from numpy import asarray, atleast_1d, mean, sqrt, where, zeros
 from numpy.linalg import eigvalsh
 from scipy.stats import chi2
-
-from chi2comb import ChiSquared, chi2comb_cdf
 
 
 def davies_pvalue(q, w):

@@ -1,5 +1,6 @@
-from chiscore import liu_sf
 from numpy.testing import assert_allclose
+
+from chiscore import liu_sf
 
 
 def test_liu_sf():
