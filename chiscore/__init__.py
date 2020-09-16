@@ -24,6 +24,6 @@ from ._liu import liu_sf
 from ._optimal import optimal_davies_pvalue
 from ._testit import test
 
-__version__ = "0.2.1"
+__version__ = "0.2.2"
 
 __all__ = ["__version__", "davies_pvalue", "liu_sf", "optimal_davies_pvalue", "test"]
