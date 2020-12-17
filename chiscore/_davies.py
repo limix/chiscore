@@ -2,7 +2,7 @@ import sys
 
 import numpy as np
 from chi2comb import ChiSquared, chi2comb_cdf
-from numpy import asarray, atleast_1d, mean, sqrt, where, zeros
+from numpy import asarray, atleast_1d, clip, finfo, mean, sqrt, where, zeros
 from numpy.linalg import eigvalsh
 from scipy.stats import chi2
 
@@ -68,21 +68,22 @@ def _pvalue_lambda(lambda_, Q):
             is_converge[i] = 0
             p_val[i] = p_val_liu[i]
 
+    p_val[:] = clip(p_val, finfo(float).tiny, 1.0)
     p_val_msg = None
     p_val_log = None
-    if p_val[0] == 0:
-        # TODO: the tests have never been here. Come up with a tests that arrives here.
-        param = _liu_params_mod_lambda(lambda_)
-        p_val_msg = _liu_pvalue_mod_lambda_zero(
-            Q[0],
-            param["muQ"],
-            param["muX"],
-            param["sigmaQ"],
-            param["sigmaX"],
-            param["ll"],
-            param["d"],
-        )
-        p_val_log = _liu_pvalue_mod_lambda(Q[0], lambda_, log_p=True)[0]
+    # if p_val[0] == 0:
+    #     # TODO: the tests have never been here. Come up with a tests that arrives here.
+    #     param = _liu_params_mod_lambda(lambda_)
+    #     p_val_msg = _liu_pvalue_mod_lambda_zero(
+    #         Q[0],
+    #         param["muQ"],
+    #         param["muX"],
+    #         param["sigmaQ"],
+    #         param["sigmaX"],
+    #         param["ll"],
+    #         param["d"],
+    #     )
+    #     p_val_log = _liu_pvalue_mod_lambda(Q[0], lambda_, log_p=True)[0]
 
     return dict(
         p_value=p_val,
