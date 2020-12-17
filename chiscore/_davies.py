@@ -7,7 +7,7 @@ from numpy.linalg import eigvalsh
 from scipy.stats import chi2
 
 
-def davies_pvalue(q, w):
+def davies_pvalue(q, w, return_info=False):
     """
     Joint significance of statistics derived from chi2-squared distributions.
 
@@ -32,10 +32,8 @@ def davies_pvalue(q, w):
         w = w / maxq
 
     re = _pvalue_lambda(_lambda(w), q)
-    param = dict()
-    param["liu_pval"] = re["p_val_liu"][0]
-    param["Is_Converged"] = re["is_converge"][0]
-
+    if return_info:
+        return re["p_value"][0], re
     return re["p_value"][0]
 
 
